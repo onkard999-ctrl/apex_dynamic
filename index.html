@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apex Dynamics | Automotive & Electrical Engineering</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#050B14',
+                            card: '#0B1320',
+                            accent: '#00E5FF', // Electric Cyan
+                            accentHover: '#00B3CC',
+                            text: '#E2E8F0',
+                            muted: '#94A3B8'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #050B14;
+            color: #E2E8F0;
+            overflow-x: hidden;
+        }
+        /* Grid background pattern for sections */
+        .bg-grid {
+            background-image: linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        .text-gradient {
+            background: linear-gradient(90deg, #FFFFFF 0%, #00E5FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #050B14; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #00E5FF; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00B3CC; 
+        }
+        
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        /* Glassmorphism utilities */
+        .glass {
+            background: rgba(11, 19, 32, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 229, 255, 0.1);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-brand-accent selection:text-brand-dark">
+
+    <div id="canvas-container"></div>
+
+    <nav class="fixed w-full z-50 glass transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex-shrink-0 flex items-center gap-2 cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <div class="w-8 h-8 rounded-full border-2 border-brand-accent flex items-center justify-center relative overflow-hidden">
+                        <div class="w-3 h-3 bg-brand-accent rounded-full animate-pulse"></div>
+                    </div>
+                    <span class="font-bold text-xl tracking-wider text-white">APEX<span class="text-brand-accent">DYNAMICS</span></span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#infrastructure" class="text-sm font-medium text-brand-muted hover:text-brand-accent transition-colors">Infrastructure</a>
+                    <a href="#products" class="text-sm font-medium text-brand-muted hover:text-brand-accent transition-colors">Products</a>
+                    <a href="#expertise" class="text-sm font-medium text-brand-muted hover:text-brand-accent transition-colors">Expertise</a>
+                    <a href="#process" class="text-sm font-medium text-brand-muted hover:text-brand-accent transition-colors">Workflow</a>
+                    <a href="#about" class="text-sm font-medium text-brand-muted hover:text-brand-accent transition-colors">About</a>
+                </div>
+                <div class="hidden md:flex">
+                    <a href="#contact" class="px-5 py-2.5 bg-brand-accent/10 border border-brand-accent text-brand-accent hover:bg-brand-accent hover:text-brand-dark transition-all rounded font-medium text-sm">
+                        Initiate Project
+                    </a>
+                </div>
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button class="text-brand-muted hover:text-white focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section id="hero" class="relative h-screen flex items-center justify-center pt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center md:text-left flex flex-col md:flex-row items-center w-full">
+            <div class="md:w-1/2 z-10">
+                <div class="inline-block px-3 py-1 mb-6 border border-brand-accent/30 rounded-full bg-brand-accent/5 backdrop-blur-sm">
+                    <span class="text-brand-accent text-xs font-mono uppercase tracking-widest">Next-Gen EV Engineering</span>
+                </div>
+                <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 leading-tight text-white">
+                    Precision Engineeering.<br>
+                    <span class="text-gradient">Electrified Future.</span>
+                </h1>
+                <p class="text-lg md:text-xl text-brand-muted mb-10 max-w-2xl font-light">
+                    Pioneering automotive and electrical solutions. From high-performance EV motor design to rigorous validation testing, we turn concepts into certified realities.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                    <a href="#infrastructure" class="px-8 py-4 bg-brand-accent text-brand-dark font-bold rounded hover:bg-brand-accentHover transition-colors flex items-center justify-center gap-2">
+                        Explore Capabilities
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+                    </a>
+                    <a href="#products" class="px-8 py-4 glass text-white font-medium rounded hover:bg-brand-card transition-colors flex items-center justify-center gap-2">
+                        View Products
+                    </a>
+                </div>
+            </div>
+            <!-- Empty div to allow 3D canvas to show on the right -->
+            <div class="md:w-1/2 h-64 md:h-full pointer-events-none"></div>
+        </div>
+        
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce z-10">
+            <div class="w-8 h-12 border-2 border-brand-muted rounded-full flex justify-center p-1">
+                <div class="w-1 h-3 bg-brand-accent rounded-full"></div>
+            </div>
+        </div>
+    </section>
+
+    <div class="bg-brand-dark/95 backdrop-blur-md relative z-10 border-t border-brand-accent/20 shadow-[0_-20px_50px_rgba(0,229,255,0.1)]">
+        <!-- Content wrapper to hide background canvas behind actual content -->
+
+        <section id="infrastructure" class="py-24 bg-grid relative border-b border-white/5">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">State-of-the-Art <span class="text-brand-accent">Infrastructure</span></h2>
+                    <p class="text-brand-muted max-w-2xl mx-auto">Our facility is equipped with world-class machinery to ensure absolute precision, rigorous testing, and flawless manufacturing execution.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Infra Card 1 -->
+                    <div class="glass p-8 rounded-xl hover:-translate-y-2 transition-transform duration-300 group">
+                        <div class="w-14 h-14 bg-brand-dark rounded-lg flex items-center justify-center border border-brand-accent/30 mb-6 group-hover:border-brand-accent transition-colors">
+                            <svg class="w-7 h-7 text-brand-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Custom Hydraulic Presses</h3>
+                        <p class="text-brand-muted text-sm leading-relaxed">High-tonnage stamping and forming capabilities tailored for precision rotor laminations and complex automotive structural components.</p>
+                    </div>
+                    <!-- Infra Card 2 -->
+                    <div class="glass p-8 rounded-xl hover:-translate-y-2 transition-transform duration-300 group">
+                        <div class="w-14 h-14 bg-brand-dark rounded-lg flex items-center justify-center border border-brand-accent/30 mb-6 group-hover:border-brand-accent transition-colors">
+                            <svg class="w-7 h-7 text-brand-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Advanced Dynamometers</h3>
+                        <p class="text-brand-muted text-sm leading-relaxed">High-speed active dynamometers for comprehensive torque, speed, and efficiency mapping of electric powertrains up to 25,000 RPM.</p>
+                    </div>
+                    <!-- Infra Card 3 -->
+                    <div class="glass p-8 rounded-xl hover:-translate-y-2 transition-transform duration-300 group">
+                        <div class="w-14 h-14 bg-brand-dark rounded-lg flex items-center justify-center border border-brand-accent/30 mb-6 group-hover:border-brand-accent transition-colors">
+                            <svg class="w-7 h-7 text-brand-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Thermal Mapping Lab</h3>
+                        <p class="text-brand-muted text-sm leading-relaxed">Multi-point infrared telemetry and environmental chambers (-40°C to +150°C) to simulate extreme operating conditions.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="products" class="py-24 relative border-b border-white/5">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row justify-between items-end mb-12">
+                    <div class="max-w-2xl">
+                        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Engineered <span class="text-brand-accent">Products</span></h2>
+                        <p class="text-brand-muted">Proprietary mechanisms and modular electrical solutions built for the future of mobility.</p>
+                    </div>
+                    <div class="mt-4 md:mt-0 text-right">
+                        <p class="text-sm text-brand-accent/80 font-mono flex items-center gap-2 justify-end">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                            Note: Video loops recommended below for mechanical demonstrations.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Product 1 Placeholder -->
+                    <div class="group relative rounded-xl overflow-hidden glass border-brand-accent/20">
+                        <div class="aspect-video bg-brand-dark relative flex items-center justify-center overflow-hidden">
+                            <!-- Simulated Video Pattern -->
+                            <div class="absolute inset-0 opacity-20" style="background-image: repeating-linear-gradient(45deg, #00E5FF 0, #00E5FF 1px, transparent 1px, transparent 10px);"></div>
+                            <div class="z-10 flex flex-col items-center opacity-50 group-hover:opacity-100 transition-opacity">
+                                <svg class="w-12 h-12 text-white mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                <span class="font-mono text-sm tracking-widest text-brand-accent">VIDEO PLACEHOLDER</span>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-white mb-2">Aero-Core EV Rotor Assembly</h3>
+                            <p class="text-brand-muted text-sm">High-density magnetic core designed for ultra-low eddy current losses. Perfect for high-speed performance applications.</p>
+                        </div>
+                    </div>
+
+                    <!-- Product 2 Placeholder -->
+                    <div class="group relative rounded-xl overflow-hidden glass border-brand-accent/20">
+                        <div class="aspect-video bg-brand-dark relative flex items-center justify-center overflow-hidden">
+                            <!-- Simulated Video Pattern -->
+                            <div class="absolute inset-0 opacity-20" style="background-image: repeating-linear-gradient(-45deg, #00E5FF 0, #00E5FF 1px, transparent 1px, transparent 10px);"></div>
+                            <div class="z-10 flex flex-col items-center opacity-50 group-hover:opacity-100 transition-opacity">
+                                <svg class="w-12 h-12 text-white mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                <span class="font-mono text-sm tracking-widest text-brand-accent">VIDEO PLACEHOLDER</span>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-white mb-2">Integrated Smart Inverter Unit</h3>
+                            <p class="text-brand-muted text-sm">Compact, fluid-cooled SiC (Silicon Carbide) inverter with built-in telematics and real-time efficiency optimization.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="expertise" class="py-24 bg-grid relative border-b border-white/5">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Core <span class="text-brand-accent">Competencies</span></h2>
+                    <p class="text-brand-muted max-w-2xl mx-auto">Our unique selling proposition lies in our end-to-end expertise, taking complex engineering problems from whiteboard to production line.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-brand-card p-6 rounded-lg border border-white/5 hover:border-brand-accent/50 transition-colors">
+                        <div class="text-brand-accent text-3xl mb-4 font-mono">01</div>
+                        <h4 class="text-lg font-bold text-white mb-2">EV Motor Dev</h4>
+                        <p class="text-sm text-brand-muted">Custom topological optimization for BLDC and PMSM motors yielding higher torque density.</p>
+                    </div>
+                    <div class="bg-brand-card p-6 rounded-lg border border-white/5 hover:border-brand-accent/50 transition-colors">
+                        <div class="text-brand-accent text-3xl mb-4 font-mono">02</div>
+                        <h4 class="text-lg font-bold text-white mb-2">Benchmarking</h4>
+                        <p class="text-sm text-brand-muted">Reverse engineering and comparative analysis against leading global powertrains.</p>
+                    </div>
+                    <div class="bg-brand-card p-6 rounded-lg border border-white/5 hover:border-brand-accent/50 transition-colors">
+                        <div class="text-brand-accent text-3xl mb-4 font-mono">03</div>
+                        <h4 class="text-lg font-bold text-white mb-2">IP Testing</h4>
+                        <p class="text-sm text-brand-muted">In-house Ingress Protection labs up to IP69K standards for robust automotive durability.</p>
+                    </div>
+                    <div class="bg-brand-card p-6 rounded-lg border border-white/5 hover:border-brand-accent/50 transition-colors">
+                        <div class="text-brand-accent text-3xl mb-4 font-mono">04</div>
+                        <h4 class="text-lg font-bold text-white mb-2">NVH Optimization</h4>
+                        <p class="text-sm text-brand-muted">Noise, Vibration, and Harshness tuning to deliver silent, ultra-smooth electric mobility.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="process" class="py-24 relative border-b border-white/5">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-16 text-center">Engineering <span class="text-brand-accent">Workflow</span></h2>
+                
+                <div class="relative">
+                    <!-- Line connecting steps -->
+                    <div class="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-brand-muted/20 -translate-y-1/2 z-0"></div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-8 relative z-10">
+                        <!-- Step 1 -->
+                        <div class="flex flex-col items-center text-center">
+                            <div class="w-16 h-16 rounded-full bg-brand-dark border-2 border-brand-accent flex items-center justify-center text-xl font-bold text-white mb-4 shadow-[0_0_15px_rgba(0,229,255,0.3)]">
+                                1
+                            </div>
+                            <h4 class="font-bold text-white mb-2">Concept</h4>
+                            <p class="text-xs text-brand-muted">Feasibility study & theoretical modeling.</p>
+                        </div>
+                        <!-- Step 2 -->
+                        <div class="flex flex-col items-center text-center">
+                            <div class="w-16 h-16 rounded-full bg-brand-dark border-2 border-brand-accent flex items-center justify-center text-xl font-bold text-white mb-4 shadow-[0_0_15px_rgba(0,229,255,0.3)]">
+                                2
+                            </div>
+                            <h4 class="font-bold text-white mb-2">Design</h4>
+                            <p class="text-xs text-brand-muted">CAD, CAE, and electromagnetic simulations.</p>
+                        </div>
+                        <!-- Step 3 -->
+                        <div class="flex flex-col items-center text-center">
+                            <div class="w-16 h-16 rounded-full bg-brand-dark border-2 border-brand-accent flex items-center justify-center text-xl font-bold text-white mb-4 shadow-[0_0_15px_rgba(0,229,255,0.3)]">
+                                3
+                            </div>
+                            <h4 class="font-bold text-white mb-2">Validation</h4>
+                            <p class="text-xs text-brand-muted">Prototyping & rigorous dynamic testing.</p>
+                        </div>
+                        <!-- Step 4 -->
+                        <div class="flex flex-col items-center text-center">
+                            <div class="w-16 h-16 rounded-full bg-brand-dark border-2 border-brand-accent flex items-center justify-center text-xl font-bold text-white mb-4 shadow-[0_0_15px_rgba(0,229,255,0.3)]">
+                                4
+                            </div>
+                            <h4 class="font-bold text-white mb-2">Homologation</h4>
+                            <p class="text-xs text-brand-muted">Regulatory compliance and certifications.</p>
+                        </div>
+                        <!-- Step 5 -->
+                        <div class="flex flex-col items-center text-center">
+                            <div class="w-16 h-16 rounded-full bg-brand-accent flex items-center justify-center text-xl font-bold text-brand-dark mb-4 shadow-[0_0_20px_rgba(0,229,255,0.6)]">
+                                5
+                            </div>
+                            <h4 class="font-bold text-white mb-2">Manufacturing</h4>
+                            <p class="text-xs text-brand-muted">Tooling setup and scaled production.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-24 bg-grid relative border-b border-white/5">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                    
+                    <!-- Industries Served -->
+                    <div>
+                        <h2 class="text-2xl font-bold text-white mb-8 border-l-4 border-brand-accent pl-4">Industries Served</h2>
+                        <div class="space-y-4">
+                            <div class="glass p-5 rounded-lg flex items-center gap-4 hover:bg-brand-card transition-colors cursor-default">
+                                <div class="p-3 bg-brand-accent/10 rounded text-brand-accent">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white">Electric Vehicles (Two-Wheelers)</h4>
+                                    <p class="text-sm text-brand-muted">High-efficiency hub and mid-drive motors.</p>
+                                </div>
+                            </div>
+                            <div class="glass p-5 rounded-lg flex items-center gap-4 hover:bg-brand-card transition-colors cursor-default">
+                                <div class="p-3 bg-brand-accent/10 rounded text-brand-accent">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white">Commercial Automotive</h4>
+                                    <p class="text-sm text-brand-muted">Traction motors and power electronics.</p>
+                                </div>
+                            </div>
+                            <div class="glass p-5 rounded-lg flex items-center gap-4 hover:bg-brand-card transition-colors cursor-default">
+                                <div class="p-3 bg-brand-accent/10 rounded text-brand-accent">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white">Industrial Automation</h4>
+                                    <p class="text-sm text-brand-muted">Servo motors and high-precision actuators.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Clients Grid -->
+                    <div>
+                        <h2 class="text-2xl font-bold text-white mb-8 border-l-4 border-brand-accent pl-4">Trusted By Leaders</h2>
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            <!-- Dummy Client Logos -->
+                            <div class="h-24 bg-brand-card/50 border border-white/5 rounded flex items-center justify-center opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0">
+                                <span class="font-bold text-white tracking-widest text-sm">VOLTAIC</span>
+                            </div>
+                            <div class="h-24 bg-brand-card/50 border border-white/5 rounded flex items-center justify-center opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0">
+                                <span class="font-bold text-white tracking-widest text-sm">AERO DYN</span>
+                            </div>
+                            <div class="h-24 bg-brand-card/50 border border-white/5 rounded flex items-center justify-center opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0">
+                                <span class="font-bold text-white tracking-widest text-sm">NEXUS EV</span>
+                            </div>
+                            <div class="h-24 bg-brand-card/50 border border-white/5 rounded flex items-center justify-center opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0">
+                                <span class="font-bold text-white tracking-widest text-sm">MACHT INC</span>
+                            </div>
+                            <div class="h-24 bg-brand-card/50 border border-white/5 rounded flex items-center justify-center opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0">
+                                <span class="font-bold text-white tracking-widest text-sm">TORQUE</span>
+                            </div>
+                            <div class="h-24 bg-brand-card/50 border border-white/5 rounded flex items-center justify-center opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0">
+                                <span class="font-bold text-white tracking-widest text-sm">OMNI MOTOR</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="py-24 relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="bg-brand-card/80 backdrop-blur-md rounded-2xl border border-brand-accent/30 overflow-hidden relative shadow-2xl">
+                    <!-- Glow effect -->
+                    <div class="absolute -top-24 -right-24 w-64 h-64 bg-brand-accent/20 rounded-full blur-3xl pointer-events-none"></div>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2">
+                        <!-- About Content -->
+                        <div class="p-12 lg:p-16 border-b lg:border-b-0 lg:border-r border-white/10">
+                            <h2 class="text-3xl font-bold text-white mb-6">About <span class="text-brand-accent">Apex Dynamics</span></h2>
+                            <p class="text-brand-muted mb-6 leading-relaxed">
+                                Founded by a team of veteran automotive engineers, Apex Dynamics exists at the intersection of mechanical integrity and electrical innovation. We bridge the gap between theoretical R&D and high-volume manufacturing.
+                            </p>
+                            <p class="text-brand-muted leading-relaxed">
+                                Our mission is to accelerate the global transition to efficient, sustainable mobility by providing uncompromised engineering solutions, reducing time-to-market for our partners.
+                            </p>
+                            <div class="mt-8 flex gap-8">
+                                <div>
+                                    <div class="text-3xl font-bold text-white">15+</div>
+                                    <div class="text-xs text-brand-accent uppercase tracking-wider mt-1">Years Exp.</div>
+                                </div>
+                                <div>
+                                    <div class="text-3xl font-bold text-white">50+</div>
+                                    <div class="text-xs text-brand-accent uppercase tracking-wider mt-1">Patents</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- CTA Form -->
+                        <div id="contact" class="p-12 lg:p-16 bg-black/20">
+                            <h3 class="text-2xl font-bold text-white mb-2">Initiate a Project</h3>
+                            <p class="text-brand-muted text-sm mb-8">Discuss your engineering challenges with our technical team.</p>
+                            
+                            <form class="space-y-4" onsubmit="event.preventDefault();">
+                                <div>
+                                    <label class="block text-xs font-medium text-brand-muted mb-1">Company / Name</label>
+                                    <input type="text" class="w-full bg-brand-dark border border-white/10 rounded px-4 py-2.5 text-white focus:outline-none focus:border-brand-accent transition-colors" placeholder="e.g. Nexus Automotive">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-brand-muted mb-1">Email Address</label>
+                                    <input type="email" class="w-full bg-brand-dark border border-white/10 rounded px-4 py-2.5 text-white focus:outline-none focus:border-brand-accent transition-colors" placeholder="engineer@company.com">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-brand-muted mb-1">Project Scope</label>
+                                    <select class="w-full bg-brand-dark border border-white/10 rounded px-4 py-2.5 text-white focus:outline-none focus:border-brand-accent transition-colors">
+                                        <option>Motor Development</option>
+                                        <option>Validation & Testing</option>
+                                        <option>Full Powertrain Integration</option>
+                                        <option>Other Engineering Services</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="w-full mt-4 bg-brand-accent text-brand-dark font-bold py-3 rounded hover:bg-brand-accentHover transition-colors">
+                                    Request Technical Consultation
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="py-8 text-center border-t border-white/5">
+            <p class="text-sm text-brand-muted font-mono">&copy; 2026 Apex Dynamics Engineering. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Setup Three.js Scene
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        // Add slight fog for depth matching background
+        scene.fog = new THREE.FogExp2(0x050B14, 0.05);
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 12;
+        // Shift camera slightly right so object is on the right side of hero text
+        camera.position.x = 3;
+
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        container.appendChild(renderer.domElement);
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
+        scene.add(ambientLight);
+
+        const mainLight = new THREE.DirectionalLight(0xffffff, 1);
+        mainLight.position.set(5, 10, 7);
+        scene.add(mainLight);
+
+        const accentLight = new THREE.PointLight(0x00E5FF, 2, 20); // Electric blue light
+        accentLight.position.set(-2, 0, 5);
+        scene.add(accentLight);
+        
+        const accentLight2 = new THREE.PointLight(0x0088FF, 1.5, 20); 
+        accentLight2.position.set(3, -5, -2);
+        scene.add(accentLight2);
+
+        // Materials
+        const metalMaterial = new THREE.MeshStandardMaterial({
+            color: 0x445566,
+            metalness: 0.9,
+            roughness: 0.2,
+            flatShading: false
+        });
+
+        const copperMaterial = new THREE.MeshStandardMaterial({
+            color: 0xb87333,
+            metalness: 0.7,
+            roughness: 0.4
+        });
+        
+        const glowMaterial = new THREE.MeshBasicMaterial({
+            color: 0x00E5FF,
+            wireframe: true,
+            transparent: true,
+            opacity: 0.3
+        });
+
+        // Build a complex EV Rotor / Gear Assembly
+        const rotorGroup = new THREE.Group();
+
+        // 1. Central Shaft
+        const shaftGeo = new THREE.CylinderGeometry(0.5, 0.5, 8, 32);
+        const shaft = new THREE.Mesh(shaftGeo, metalMaterial);
+        rotorGroup.add(shaft);
+
+        // 2. Main Rotor Core (Laminations)
+        const coreGeo = new THREE.CylinderGeometry(2.5, 2.5, 4, 32);
+        const core = new THREE.Mesh(coreGeo, metalMaterial);
+        // Add a wireframe overlay for tech look
+        const coreWire = new THREE.Mesh(coreGeo, glowMaterial);
+        coreWire.scale.set(1.01, 1.01, 1.01);
+        core.add(coreWire);
+        rotorGroup.add(core);
+
+        // 3. Copper Windings/Slots around the core
+        const slots = 12;
+        for (let i = 0; i < slots; i++) {
+            const angle = (i / slots) * Math.PI * 2;
+            const windingGeo = new THREE.BoxGeometry(0.6, 4.2, 0.8);
+            const winding = new THREE.Mesh(windingGeo, copperMaterial);
+            
+            // Position on outer edge of core
+            winding.position.x = Math.cos(angle) * 2.3;
+            winding.position.z = Math.sin(angle) * 2.3;
+            winding.rotation.y = -angle;
+            
+            rotorGroup.add(winding);
+        }
+
+        // 4. Outer Retaining Ring
+        const ringGeo = new THREE.TorusGeometry(3.2, 0.3, 16, 64);
+        const ring1 = new THREE.Mesh(ringGeo, metalMaterial);
+        ring1.position.y = 1.5;
+        ring1.rotation.x = Math.PI / 2;
+        rotorGroup.add(ring1);
+        
+        const ring2 = new THREE.Mesh(ringGeo, metalMaterial);
+        ring2.position.y = -1.5;
+        ring2.rotation.x = Math.PI / 2;
+        rotorGroup.add(ring2);
+
+        // Tilt group for better isometric view
+        rotorGroup.rotation.x = Math.PI / 4;
+        rotorGroup.rotation.z = Math.PI / 6;
+
+        scene.add(rotorGroup);
+
+        let scrollY = window.scrollY;
+        
+        window.addEventListener('scroll', () => {
+            scrollY = window.scrollY;
+            
+            // Update Navbar Glass effect
+            const nav = document.getElementById('navbar');
+            if(scrollY > 50) {
+                nav.classList.add('shadow-lg', 'border-b', 'border-brand-accent/20');
+            } else {
+                nav.classList.remove('shadow-lg', 'border-b', 'border-brand-accent/20');
+            }
+        });
+
+        // Handle Resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            
+            // Adjust camera x pos based on mobile/desktop
+            if(window.innerWidth < 768) {
+                camera.position.x = 0; // Center on mobile
+            } else {
+                camera.position.x = 3; // Shift right on desktop
+            }
+        });
+
+        // Init resize once to set correct layout
+        window.dispatchEvent(new Event('resize'));
+
+        // Animation Loop
+        const clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            const time = clock.getElapsedTime();
+
+            // Continuous slow rotation
+            rotorGroup.rotation.y += 0.005;
+
+            // Scroll-based dynamic rotation & translation
+            // As user scrolls down, the rotor rotates faster and moves slightly up/down for a parallax effect
+            const scrollFactor = scrollY * 0.002;
+            
+            // Apply scroll rotation overlayed on base rotation
+            rotorGroup.rotation.y = time * 0.2 + scrollFactor * 2;
+            rotorGroup.rotation.z = Math.PI / 6 + (scrollFactor * 0.5);
+            
+            // Move object based on scroll to act as a dynamic background across sections
+            // It starts at y=0, and goes up slightly as you scroll down
+            rotorGroup.position.y = -scrollFactor * 1.5;
+
+            renderer.render(scene, camera);
+        }
+        
+        // Start animation
+        window.onload = function() {
+            animate();
+        };
+    </script>
+</body>
+</html>
